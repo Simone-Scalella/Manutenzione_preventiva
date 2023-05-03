@@ -1,8 +1,9 @@
 from pymavlink.dialects.v20 import common as mavlink2
 from pymavlink import mavutil
 
+
 # Start a connection listening on a UDP port
-the_connection = mavutil.mavlink_connection('COM6')
+the_connection = mavutil.mavlink_connection('COM3')
 
 # Wait for the first heartbeat 
 #   This sets the system and component ID of remote system for the link
