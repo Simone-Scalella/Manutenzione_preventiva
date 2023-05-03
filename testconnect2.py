@@ -9,7 +9,7 @@ connection_string = sitl.connection_string()
 
 
 # Connect to the Vehicle.
-connection_string = 'COM6'
+connection_string = 'COM3'
 print("Start simulator (SITL)")
 print("Connecting to vehicle on: %s" % (connection_string,))
 vehicle = connect(connection_string, wait_ready=True)
@@ -37,15 +37,24 @@ cmds.clear()
 lat = 0
 lon = 0
 altitude = 0
-cmd = Command(0,0,0, mavutil.mavlink.MAV_CMD_DO_MOTOR_TEST, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,
-    0, 0, 0, 0, 0, 0,
-    lat, lon, altitude)
+cmd = Command(0,0,0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_DO_MOTOR_TEST,0,0,
+    int(1),
+    int(50), 
+    int(2), 
+    int(0), 
+    int(0), 
+    int(0),
+    int(0)
+    )
 cmds.add(cmd)
 cmds.upload()
 
+print(vehicle.commands)
+
+'''
 print("\nPrint all parameters (iterate `vehicle.parameters`):")
 for key in vehicle.parameters:
-    print(" Key:%s Value:%s" % (key,vehicle.parameters[key]))
+    print(" Key:%s Value:%s" % (key,vehicle.parameters[key]))'''
 
 
 ### fine test
