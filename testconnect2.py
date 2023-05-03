@@ -30,6 +30,8 @@ while i <= 2:
 
 ### Test volo
 
+vehicle.arm()
+
 cmds = vehicle.commands
 cmds.clear()
 lat = 0
@@ -41,7 +43,14 @@ cmd = Command(0,0,0, mavutil.mavlink.MAV_CMD_DO_MOTOR_TEST, mavutil.mavlink.MAV_
 cmds.add(cmd)
 cmds.upload()
 
+print("\nPrint all parameters (iterate `vehicle.parameters`):")
+for key in vehicle.parameters:
+    print(" Key:%s Value:%s" % (key,vehicle.parameters[key]))
+
+
 ### fine test
+
+time.sleep(10)
 
 # Close vehicle object before exiting script
 vehicle.close()
