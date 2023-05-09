@@ -1,8 +1,5 @@
 import nidaqmx
-import csv
 import time
-import keyboard
-import csv
 import pandas as pd
 
 acqui = pd.DataFrame(columns=['Time','Value'])
