@@ -58,6 +58,7 @@ def controlMotor(master,stop):
         )
         time.sleep(2)
     
+    print("deccelerazione completa.")
     '''time.sleep(3)
     
     master.mav.command_long_send(
