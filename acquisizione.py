@@ -10,3 +10,5 @@ while True:
         acqui[-1].append([time.time_ns()/1000,task.read()])
         print(acqui[-1][0])
 
+
+
