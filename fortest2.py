@@ -1,10 +1,10 @@
 import pandas as pd 
 import time
 
-def for1():
+def for2():
     try:
         for i in range(0,10):
-            print("fortest1 current index: "+ str(i))
+            print("fortest2 current index: "+ str(i))
             time.sleep(0.2)
     except KeyboardInterrupt:
-        print("for1 interrupt.")
+        print("for2 interrupt.")

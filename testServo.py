@@ -32,7 +32,7 @@ for i in range(2,max,5):
     0, # compass learning
     0
     )
-    inputVal = inputVal.append({"time":round(time.time_ns()/1000),"pwm_percent":i},ignore_index=True)
+    inputVal = inputVal.concat({"time":round(time.time_ns()/1000),"pwm_percent":i},ignore_index=True)
     time.sleep(3)
 
 inputVal.to_csv("./pwminput.csv",index=False)
