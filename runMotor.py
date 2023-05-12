@@ -3,13 +3,13 @@ import time
 # Import mavutil
 from pymavlink import mavutil
 
-def controlMotor(master,stop):
+def controlMotor(master,stop,max=20,step=5,pauses=3):
     #dati da registrare:
     #potenza %
     #tempo unix timestamp
     inputVal = pd.DataFrame(columns=["time","pwm_percent"])
-    max = 20
-    step = 5
+    #max = 20
+    #step = 5
     rows = []
     print("accelerazione in corso...")
     for i in range(2,max,step):
@@ -30,7 +30,7 @@ def controlMotor(master,stop):
         0
         )
         rows.append({"time":round(time.time_ns()/1000),"pwm_percent":i})
-        time.sleep(3)
+        time.sleep(pauses)
     print("motor test complete.. writting to csv.")
     for row in rows:
         pd.concat([inputVal,pd.DataFrame([row])],ignore_index=True)
@@ -41,7 +41,7 @@ def controlMotor(master,stop):
             stop.put(1)
     
     print("deccelerazione in corso...")
-    for j in range(max-step,0,-step):
+    for j in range(max-step,0,-5):
         print("deccelerating motor: %s" % j)
         master.mav.command_long_send(
         master.target_system,
