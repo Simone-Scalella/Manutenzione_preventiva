@@ -8,7 +8,7 @@ def acquisizioneNI(stop):
     print("NI: avviato")
     while stop.empty():
         with nidaqmx.Task() as task:
-            task.ai_channels.add_ai_voltage_chan("Dev1/ai0")
+            task.ai_channels.add_ai_voltage_chan("Dev1/ai1")
             acquirow.append({'Time':round(time.time_ns()/1000),
                           'Voltage':task.read()})
     print("NI:stop acquisizione, salvataggio in csv")       

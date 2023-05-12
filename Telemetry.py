@@ -17,13 +17,12 @@ def getDrone(master,stop):
             }
     while stop.empty():
         try:
-            #ESC_TELEMETRY manda informazioni solo quando il motore e' armato.            
+            #ESC_TELEMETRY manda informazioni solo quando il motore e' armato. 
             message = master.recv_match()
             if (message is not None):
                 message = message.to_dict()
                 msgCase[message['mavpackettype']](message)
         except Exception as e:
-            #print(e)
             pass
         time.sleep(0.001)
     DFacquiredRPM = pd.DataFrame(columns=['time','rpm'])

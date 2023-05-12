@@ -3,11 +3,10 @@ import time
 from threading import Thread 
 from queue import Queue
 from pymavlink import mavutil
-from clear_cache import clear as clear_cache
 
 if __name__ == '__main__':
     #Connect to the Vehicle.
-    connection_string = 'COM3'
+    connection_string = 'COM6'
 
     #stop queue for communication between threads
     stop = Queue(1)
@@ -24,8 +23,8 @@ if __name__ == '__main__':
         #1 thread of National Instrument
         #2 thread acquiring data
 
-        threads.append(Thread(target=workers[0],kwargs={"master":master,"stop":stop,"max":20,"step":5,"pauses":3},daemon=True))
-        #threads.append(Thread(target=workers[1],kwargs={"stop":stop},daemon=True))
+        threads.append(Thread(target=workers[0],kwargs={"master":master,"stop":stop,"max":100,"step":5,"pauses":3},daemon=True))
+        threads.append(Thread(target=workers[1],kwargs={"stop":stop},daemon=True))
         threads.append(Thread(target=workers[2],kwargs={"master":master,"stop":stop},daemon=True))
         
 
