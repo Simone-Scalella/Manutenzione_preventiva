@@ -1,10 +1,12 @@
-import runMotor,acquisizioneDrone,acquisizione,acquisizioneDrone
+import runMotor,Telemetry,acquisizione
 import time
 from threading import Thread 
 from queue import Queue
 from pymavlink import mavutil
+from clear_cache import clear as clear_cache
 
 if __name__ == '__main__':
+    clear_cache(dir = ".")
 
     #Connect to the Vehicle.
     connection_string = 'COM3'
@@ -19,7 +21,7 @@ if __name__ == '__main__':
         master.wait_heartbeat()
         print("vehicle connected and ready...")
         threads = []
-        workers = [runMotor.controlMotor,acquisizione.acquisizioneNI,acquisizioneDrone.getFromDrone]
+        workers = [runMotor.controlMotor,acquisizione.acquisizioneNI,Telemetry.getDrone]
         #0 thread motor control
         #1 thread of National Instrument
         #2 thread acquiring data

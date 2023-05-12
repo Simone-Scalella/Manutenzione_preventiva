@@ -1,16 +1,7 @@
-"""
-Example of how to directly control a Pixhawk servo output with pymavlink.
-"""
 import pandas as pd
 import time
 # Import mavutil
 from pymavlink import mavutil
-## Create the connection
-#master = mavutil.mavlink_connection('COM3')
-##master.reboot_autopilot()
-## Wait a heartbeat before sending commands
-#master.wait_heartbeat()
-#print("Heartbeat from system (system %u component %u)" % (master.target_system, master.target_component))
 
 def controlMotor(master,stop):
     #dati da registrare:
@@ -18,10 +9,11 @@ def controlMotor(master,stop):
     #tempo unix timestamp
     inputVal = pd.DataFrame(columns=["time","pwm_percent"])
     max = 20
+    step = 5
     rows = []
     print("accelerazione in corso...")
-    for i in range(2,max,5):
-        print(i)
+    for i in range(2,max,step):
+        print("empowering motor: %s" % i)
         if not stop.empty():
             max = i
             break
@@ -49,8 +41,8 @@ def controlMotor(master,stop):
             stop.put(1)
     
     print("deccelerazione in corso...")
-    for j in range(max,0,-5):
-        print(j)
+    for j in range(max-step,0,-step):
+        print("deccelerating motor: %s" % j)
         master.mav.command_long_send(
         master.target_system,
         master.target_component,
