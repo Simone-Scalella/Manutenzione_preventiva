@@ -17,7 +17,7 @@ def controlMotor(master,stop):
     #potenza %
     #tempo unix timestamp
     inputVal = pd.DataFrame(columns=["time","pwm_percent"])
-    max = 10
+    max = 20
     rows = []
     print("accelerazione in corso...")
     for i in range(2,max,5):
@@ -43,7 +43,11 @@ def controlMotor(master,stop):
     for row in rows:
         pd.concat([inputVal,pd.DataFrame([row])],ignore_index=True)
     inputVal.to_csv("./pwminput.csv",index=False)
-    stop.put(1)
+    
+    #Natural stop
+    if stop.empty():
+            stop.put(1)
+    
     print("deccelerazione in corso...")
     for j in range(max,0,-5):
         print(j)
