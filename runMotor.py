@@ -17,7 +17,7 @@ def controlMotor(master,stop):
     #potenza %
     #tempo unix timestamp
     inputVal = pd.DataFrame(columns=["time","pwm_percent"])
-    max = 30
+    max = 10
     rows = []
     print("accelerazione in corso...")
     for i in range(2,max,5):
