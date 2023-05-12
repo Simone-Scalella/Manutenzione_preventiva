@@ -21,7 +21,7 @@ if __name__ == '__main__':
         workers = [runMotor.controlMotor,acquisizione.acquisizioneNI,Telemetry.getDrone]
         #0 thread motor control
         #1 thread of National Instrument
-        #2 thread acquiring data
+        #2 thread acquiring data Note: you may need to connect once from Mission Planner to get Telemetry data.
 
         threads.append(Thread(target=workers[0],kwargs={"master":master,"stop":stop,"max":100,"step":5,"pauses":3},daemon=True))
         threads.append(Thread(target=workers[1],kwargs={"stop":stop},daemon=True))
