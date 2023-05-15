@@ -33,7 +33,7 @@ def getDrone(master,stop):
     DFacquiredBatt = pd.DataFrame(columns=['time','volts'])
     for new_row in acquiredBatt:
         DFacquiredBatt = pd.concat([DFacquiredBatt, pd.DataFrame([new_row])], ignore_index=True)
-    DFacquiredBatt.to_csv('./droneOutput.csv',index=False)
+    DFacquiredBatt.to_csv('./droneOutput.csv','\t',index=False)
     print('RPM:acquisizione completa..')
         
 

@@ -4,9 +4,10 @@ from threading import Thread
 from queue import Queue
 from pymavlink import mavutil
 
+
 if __name__ == '__main__':
     #Connect to the Vehicle.
-    connection_string = 'COM6'
+    connection_string = 'COM3'
 
     #stop queue for communication between threads
     stop = Queue(1)
