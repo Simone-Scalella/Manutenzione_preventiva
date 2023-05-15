@@ -23,7 +23,7 @@ if __name__ == '__main__':
         #1 thread of National Instrument
         #2 thread acquiring data Note: you may need to connect once from Mission Planner to get Telemetry data.
 
-        threads.append(Thread(target=workers[0],kwargs={"master":master,"stop":stop,"max":100,"step":5,"pauses":3},daemon=True))
+        threads.append(Thread(target=workers[0],kwargs={"master":master,"stop":stop,"max":20,"step":5,"pauses":3},daemon=True))
         threads.append(Thread(target=workers[1],kwargs={"stop":stop},daemon=True))
         threads.append(Thread(target=workers[2],kwargs={"master":master,"stop":stop},daemon=True))
         
