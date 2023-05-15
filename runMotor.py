@@ -34,7 +34,7 @@ def controlMotor(master,stop,max=20,step=5,pauses=3):
     print("motor test complete.. writting to csv.")
     for row in rows:
         inputVal = pd.concat([inputVal,pd.DataFrame([row])],ignore_index=True)
-    inputVal.to_csv("./pwminput.csv",index=False)
+    inputVal.to_csv("./pwminput.csv",'\t',index=False)
     
     #Natural stop
     if stop.empty():
