@@ -58,18 +58,4 @@ def controlMotor(master,stop,max=20,step=5,pauses=3):
         time.sleep(2)
     
     print("deccelerazione completa.")
-    '''time.sleep(3)
-    
-    master.mav.command_long_send(
-        master.target_system,
-        master.target_component,
-        mavutil.mavlink.MAV_CMD_DO_MOTOR_TEST,1,
-        6,
-        mavutil.mavlink.MOTOR_TEST_THROTTLE_PERCENT,
-        5, # pwm-to-output
-        6, # timeout in seconds
-        1, # number of motors to output
-        0, # compass learning
-        0
-        )'''
     
