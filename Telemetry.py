@@ -5,11 +5,11 @@ def getDrone(master,stop):
     print("waiting for rpm data..")
     def acquireRPM(message):
         acquiredRPM.append({"time":round(time.time_ns()/1000),"rpm":message['rpm'][3]})
-        print("rpm motor 4: %s" % message['rpm'][3])
+        #print("rpm motor 4: %s" % message['rpm'][3])
 
     def acquireBatt(message):
         acquiredBatt.append({"time":round(time.time_ns()/1000),"volts":float(message['voltage_battery']/1000)})
-        print("get battery with volts: %s" % float(message['voltage_battery']/1000))
+        #print("get battery with volts: %s" % float(message['voltage_battery']/1000))
     
     msgCase = {
                 'ESC_TELEMETRY_1_TO_4':acquireRPM,
@@ -24,7 +24,7 @@ def getDrone(master,stop):
                 msgCase[message['mavpackettype']](message)
         except Exception as e:
             pass
-        time.sleep(0.001)
+        time.sleep(0.0001)
     DFacquiredRPM = pd.DataFrame(columns=['time','rpm'])
     for new_row in acquiredRPM:
         DFacquiredRPM = pd.concat([DFacquiredRPM, pd.DataFrame([new_row])], ignore_index=True)
@@ -33,7 +33,7 @@ def getDrone(master,stop):
     DFacquiredBatt = pd.DataFrame(columns=['time','volts'])
     for new_row in acquiredBatt:
         DFacquiredBatt = pd.concat([DFacquiredBatt, pd.DataFrame([new_row])], ignore_index=True)
-    DFacquiredBatt.to_csv('./droneOutput.csv','\t',index=False)
+    DFacquiredBatt.to_csv('./measure_Volts.csv','\t',index=False)
     print('RPM:acquisizione completa..')
         
 
