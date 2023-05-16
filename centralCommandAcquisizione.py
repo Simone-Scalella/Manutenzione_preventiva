@@ -17,16 +17,39 @@ if __name__ == '__main__':
         #vehicle = connect(connection_string, wait_ready=True)
         master = mavutil.mavlink_connection(connection_string)
         master.wait_heartbeat()
+
+        #Send a request to get the Telemetry
+
+        #ESC telemetry
+        master.mav.command_long_send(
+        master.target_system,
+        master.target_component,
+        mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL,1,
+        11030, #Message ID
+        100, #interval in us
+        1, # response target
+        0,0,0,0)
+        
+        #SYS status(Battery)
+        master.mav.command_long_send(
+        master.target_system,
+        master.target_component,
+        mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL,1,
+        1, #Message ID:SYS_STATUS
+        100, #interval in us
+        1, # response target
+        0,0,0,0)
+
         print("vehicle connected and ready...")
         threads = []
         workers = [runMotor.controlMotor,acquisizione.acquisizioneNI,Telemetry.getDrone]
         #0 thread motor control
         #1 thread of National Instrument
-        #2 thread acquiring data Note: you may need to connect once from Mission Planner to get Telemetry data.
+        #2 thread acquiring data
 
-        threads.append(Thread(target=workers[0],kwargs={"master":master,"stop":stop,"max":20,"step":5,"pauses":3},daemon=True))
+        #threads.append(Thread(target=workers[0],kwargs={"master":master,"stop":stop,"max":20,"step":5,"pauses":3},daemon=True))
         #threads.append(Thread(target=workers[1],kwargs={"stop":stop},daemon=True))
-        #threads.append(Thread(target=workers[2],kwargs={"master":master,"stop":stop},daemon=True))
+        threads.append(Thread(target=workers[2],kwargs={"master":master,"stop":stop},daemon=True))
         
 
         for t in threads:
