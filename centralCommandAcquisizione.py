@@ -26,7 +26,7 @@ if __name__ == '__main__':
         master.target_component,
         mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL,1,
         11030, #Message ID
-        100, #interval in us
+        10, #interval in us
         1, # response target
         0,0,0,0)
         
@@ -36,7 +36,7 @@ if __name__ == '__main__':
         master.target_component,
         mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL,1,
         1, #Message ID:SYS_STATUS
-        100, #interval in us
+        10, #interval in us
         1, # response target
         0,0,0,0)
 
@@ -47,7 +47,7 @@ if __name__ == '__main__':
         #1 thread of National Instrument
         #2 thread acquiring data
 
-        threads.append(Thread(target=workers[0],kwargs={"master":master,"stop":stop,"max":20,"step":5,"pauses":3},daemon=True))
+        threads.append(Thread(target=workers[0],kwargs={"master":master,"stop":stop,"max":100,"step":5,"pauses":3},daemon=True))
         threads.append(Thread(target=workers[1],kwargs={"stop":stop},daemon=True))
         threads.append(Thread(target=workers[2],kwargs={"master":master,"stop":stop},daemon=True))
         

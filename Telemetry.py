@@ -24,7 +24,7 @@ def getDrone(master,stop):
                 msgCase[message['mavpackettype']](message)
         except Exception as e:
             pass
-        time.sleep(0.0001)
+        time.sleep(0.00001)
     DFacquiredRPM = pd.DataFrame(columns=['time','rpm'])
     for new_row in acquiredRPM:
         DFacquiredRPM = pd.concat([DFacquiredRPM, pd.DataFrame([new_row])], ignore_index=True)
