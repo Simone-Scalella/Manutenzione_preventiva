@@ -5,13 +5,16 @@ from queue import Queue
 from pymavlink import mavutil
 import pandas as pd
 
-def controlMotorMax(stop,max=100,step=10):
+
+
+def controlMotorMax(stop,stop1,max=100,step=10):
     #dati da registrare:
     #potenza %
     #tempo unix timestamp
     #if it exceeds max, run the motor with max    
     #Stop
-    
+ 
+
     while stop.empty():
         fase = 1
         print("empowering motor: %s" % max)
@@ -44,9 +47,16 @@ def controlMotorMax(stop,max=100,step=10):
         0, # compass learning
         0
         )
-        time.sleep(2)
+            time.sleep(2)
+        
+        #wait lock for threads
+        stop1.put(1)
+        stop1.put(1)
+        #wait for threads
+        print("wait IO writting on disk")
+        while stop1.empty() and stop.empty():
+            time.sleep(0.1)
 
-        time.sleep(5)
         
         
     print("motor control done.")
@@ -55,8 +65,17 @@ if __name__ == '__main__':
     #Connect to the Vehicle.
     connection_string = 'COM3'
 
+       
+    #simulation
+    import dronekit_sitl
+    sitl = dronekit_sitl.start_default()
+    connection_string = sitl.connection_string()
+
     #stop queue for communication between threads
     stop = Queue(1)
+
+    #wait for IO writting.
+    stop1 = Queue(2)
     try:
         
         print("Connecting to vehicle on: %s" % (connection_string,))
@@ -93,9 +112,9 @@ if __name__ == '__main__':
         #1 thread of National Instrument
         #2 thread acquiring data
 
-        threads.append(Thread(target=workers[0],kwargs={"stop":stop,"max":100,"step":10},daemon=True))
-        threads.append(Thread(target=workers[1],kwargs={"stop":stop},daemon=True))
-        threads.append(Thread(target=workers[2],kwargs={"master":master,"stop":stop},daemon=True))
+        threads.append(Thread(target=workers[0],kwargs={"stop":stop,"max":100,"step":10,'stop1':stop1},daemon=True))
+        threads.append(Thread(target=workers[1],kwargs={"stop":stop,'stop1':stop1},daemon=True))
+        threads.append(Thread(target=workers[2],kwargs={"master":master,"stop":stop,'stop1':stop1},daemon=True))
         
 
         for t in threads:
