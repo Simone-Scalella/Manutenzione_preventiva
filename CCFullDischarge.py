@@ -1,4 +1,4 @@
-import runMotor,Telemetry,acquisizione
+import runMotor,TelemetryDischarge,acquisizione
 import time
 from threading import Thread 
 from queue import Queue
@@ -49,13 +49,16 @@ def controlMotorMax(stop,stop1,max=100,step=10):
         )
             time.sleep(2)
         
+        
         #wait lock for threads
         stop1.put(1)
-        stop1.put(1)
+        #stop1.put(1)
         #wait for threads
         print("wait IO writting on disk")
-        while stop1.empty() and stop.empty():
+        while (not stop1.empty()) and (stop.empty()):
             time.sleep(0.1)
+
+        print("all check done, next interation start..")
 
         
         
@@ -107,13 +110,13 @@ if __name__ == '__main__':
 
         print("vehicle connected and ready...")
         threads = []
-        workers = [controlMotorMax,acquisizione.acquisizioneNI,Telemetry.getDrone]
+        workers = [controlMotorMax,acquisizione.acquisizioneNI,TelemetryDischarge.getDrone]
         #0 thread motor control
         #1 thread of National Instrument
         #2 thread acquiring data
 
         threads.append(Thread(target=workers[0],kwargs={"stop":stop,"max":100,"step":10,'stop1':stop1},daemon=True))
-        threads.append(Thread(target=workers[1],kwargs={"stop":stop,'stop1':stop1},daemon=True))
+        #threads.append(Thread(target=workers[1],kwargs={"stop":stop,'stop1':stop1},daemon=True))
         threads.append(Thread(target=workers[2],kwargs={"master":master,"stop":stop,'stop1':stop1},daemon=True))
         
 
@@ -127,9 +130,11 @@ if __name__ == '__main__':
         stop.put(1)
     
     # wait for the decceleration of the drone 
-    print("wait for decceleration..")
+    print("Main: wait for decceleration..")
     threads[0].join()
+    print("Main: wait for National Instrument..")
+    #threads[1].join()
+    print("Main: wait for mavlink telemetry..")
     threads[1].join()
-    threads[2].join()
     # Close vehicle object before exiting script
-    print("operation complete.")
+    print("data acquisition complete.")
