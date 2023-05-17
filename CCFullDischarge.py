@@ -1,4 +1,4 @@
-import runMotor,TelemetryDischarge,acquisizione
+import TelemetryDischarge as Telemetry,NIDischarge as NI,NIDischargeSimulation as NiSim
 import time
 from threading import Thread 
 from queue import Queue
@@ -13,11 +13,11 @@ def controlMotorMax(stop,stop1,max=100,step=10):
     #tempo unix timestamp
     #if it exceeds max, run the motor with max    
     #Stop
- 
+    
 
     while stop.empty():
         fase = 1
-        print("empowering motor: %s" % max)
+        print("Motor: Empowering motor: %s" % max)
         master.mav.command_long_send(
         master.target_system,
         master.target_component,
@@ -32,9 +32,9 @@ def controlMotorMax(stop,stop1,max=100,step=10):
         )
         time.sleep(5)
 
-        print("decelerating motor...")
+        print("Motor: decelerating motor...")
         for j in range(max-step,0,-step):
-            print("deccelerating motor: %s" % j)
+            print("Motor: decelerating motor: %s" % j)
             master.mav.command_long_send(
         master.target_system,
         master.target_component,
@@ -49,20 +49,20 @@ def controlMotorMax(stop,stop1,max=100,step=10):
         )
             time.sleep(2)
         
-        
+        print("Motor: wait IO writting on disk")
         #wait lock for threads
         stop1.put(1)
-        #stop1.put(1)
+        stop1.put(1)
         #wait for threads
-        print("wait IO writting on disk")
+        
         while (not stop1.empty()) and (stop.empty()):
             time.sleep(0.1)
 
-        print("all check done, next interation start..")
+        print("Motor: all check done, next interation start..")
 
         
         
-    print("motor control done.")
+    print("Motor: motor control done.")
 
 if __name__ == '__main__':
     #Connect to the Vehicle.
@@ -108,15 +108,17 @@ if __name__ == '__main__':
         1, # response target
         0,0,0,0)
 
-        print("vehicle connected and ready...")
+        print("Main: vehicle connected and ready...")
         threads = []
-        workers = [controlMotorMax,acquisizione.acquisizioneNI,TelemetryDischarge.getDrone]
+        workers = [controlMotorMax,NI.acquisizioneNI,Telemetry.getDrone]
+        workers = [controlMotorMax,NiSim.acquisizioneNI,Telemetry.getDrone]
+        
         #0 thread motor control
         #1 thread of National Instrument
         #2 thread acquiring data
 
         threads.append(Thread(target=workers[0],kwargs={"stop":stop,"max":100,"step":10,'stop1':stop1},daemon=True))
-        #threads.append(Thread(target=workers[1],kwargs={"stop":stop,'stop1':stop1},daemon=True))
+        threads.append(Thread(target=workers[1],kwargs={"stop":stop,'stop1':stop1},daemon=True))
         threads.append(Thread(target=workers[2],kwargs={"master":master,"stop":stop,'stop1':stop1},daemon=True))
         
 
@@ -133,8 +135,8 @@ if __name__ == '__main__':
     print("Main: wait for decceleration..")
     threads[0].join()
     print("Main: wait for National Instrument..")
-    #threads[1].join()
-    print("Main: wait for mavlink telemetry..")
     threads[1].join()
+    print("Main: wait for mavlink telemetry..")
+    threads[2].join()
     # Close vehicle object before exiting script
-    print("data acquisition complete.")
+    print("Main: data acquisition complete.")

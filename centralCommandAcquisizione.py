@@ -1,4 +1,4 @@
-import runMotor,Telemetry,acquisizione
+import runMotor,Telemetry,NI as acquisizione
 import time
 from threading import Thread 
 from queue import Queue
