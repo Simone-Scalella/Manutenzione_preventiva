@@ -11,7 +11,9 @@ def controlMotorMax(stop,max=100,step=10):
     #tempo unix timestamp
     #if it exceeds max, run the motor with max    
     #Stop
+    
     while stop.empty():
+        fase = 1
         print("empowering motor: %s" % max)
         master.mav.command_long_send(
         master.target_system,
@@ -25,15 +27,12 @@ def controlMotorMax(stop,max=100,step=10):
         0, # compass learning
         0
         )
-        time.sleep(13)
+        time.sleep(5)
 
-    if stop.empty():
-        stop.put(1)
-    
-    print("deccelerazione in corso...")
-    for j in range(max-step,0,-step):
-        print("deccelerating motor: %s" % j)
-        master.mav.command_long_send(
+        print("decelerating motor...")
+        for j in range(max-step,0,-step):
+            print("deccelerating motor: %s" % j)
+            master.mav.command_long_send(
         master.target_system,
         master.target_component,
         mavutil.mavlink.MAV_CMD_DO_MOTOR_TEST,1,
@@ -46,8 +45,11 @@ def controlMotorMax(stop,max=100,step=10):
         0
         )
         time.sleep(2)
-    
-    print("deccelerazione completa.")
+
+        time.sleep(5)
+        
+        
+    print("motor control done.")
 
 if __name__ == '__main__':
     #Connect to the Vehicle.
@@ -91,7 +93,7 @@ if __name__ == '__main__':
         #1 thread of National Instrument
         #2 thread acquiring data
 
-        threads.append(Thread(target=workers[0],kwargs={"stop":stop,"max":60,"step":10},daemon=True))
+        threads.append(Thread(target=workers[0],kwargs={"stop":stop,"max":100,"step":10},daemon=True))
         threads.append(Thread(target=workers[1],kwargs={"stop":stop},daemon=True))
         threads.append(Thread(target=workers[2],kwargs={"master":master,"stop":stop},daemon=True))
         
