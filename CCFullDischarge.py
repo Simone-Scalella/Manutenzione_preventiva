@@ -42,13 +42,15 @@ def controlMotorMax(stop,stop1,max=100,step=10):
         3, #motore 6
         mavutil.mavlink.MOTOR_TEST_THROTTLE_PERCENT,
         j, # pwm-to-output
-        3, # timeout in seconds
+        4, # timeout in seconds
         1, # number of motors to output
         0, # compass learning
         0
         )
-            time.sleep(2)
+            time.sleep(3)
         
+        #pause waiting for IO
+        time.sleep(5)
         print("Motor: wait IO writting on disk")
         #wait lock for threads
         stop1.put(1)
@@ -70,12 +72,13 @@ if __name__ == '__main__':
 
        
     #simulation
-    import dronekit_sitl
-    sitl = dronekit_sitl.start_default()
-    connection_string = sitl.connection_string()
+    #import dronekit_sitl
+    #sitl = dronekit_sitl.start_default()
+    #connection_string = sitl.connection_string()
 
     #stop queue for communication between threads
     stop = Queue(1)
+
 
     #wait for IO writting.
     stop1 = Queue(2)
@@ -111,6 +114,8 @@ if __name__ == '__main__':
         print("Main: vehicle connected and ready...")
         threads = []
         workers = [controlMotorMax,NI.acquisizioneNI,Telemetry.getDrone]
+
+        #used for testing fake NI acquisition
         #workers = [controlMotorMax,NiSim.acquisizioneNI,Telemetry.getDrone]
         
         #0 thread motor control

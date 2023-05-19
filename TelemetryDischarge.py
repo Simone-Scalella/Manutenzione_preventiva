@@ -3,11 +3,11 @@ def getDrone(master,stop,stop1):
     print("Telemetry: activated.")
     def acquireRPM(message):
         acquiredRPM.append({"time":round(time.time_ns()/1000),"rpm":message['rpm'][3]})
-        print("got rpm motor 4: %s" % message['rpm'][3])
+        #print("got rpm motor 4: %s" % message['rpm'][3])
 
     def acquireBatt(message):
         acquiredBatt.append({"time":round(time.time_ns()/1000),"volts":float(message['voltage_battery']/1000)})
-        print("got battery with volts: %s" % float(message['voltage_battery']/1000))
+        #print("got battery with volts: %s" % float(message['voltage_battery']/1000))
     
     msgCase = {
                 'ESC_TELEMETRY_1_TO_4':acquireRPM,
@@ -31,13 +31,12 @@ def getDrone(master,stop,stop1):
                         msgCase[message['mavpackettype']](message)
                 except Exception as e:
                     pass
-                time.sleep(0.00001)
+                #time.sleep(0.00001)
             
             print("Telemetry: Writting to the csv..")
             
-            print(acquiredBatt)
-
             if len(acquiredRPM)>0:
+
                 print(acquiredRPM[-1])
             else:
                 print("Telemetry: No RPM data acquired.")
@@ -60,9 +59,12 @@ def getDrone(master,stop,stop1):
             
             i += 1
             ##battery low: shutdown
-            #if(acquiredBatt[-1]['volts'] <= 15.2):
-            #    print("Telemetry: battery too low, proceeds to shut down drone..")
-            #    stop.put(1)
+            if(len(acquiredBatt)):
+                print("Battery voltage: "+ str(acquiredBatt[-1]['volts']))
+            
+            if(acquiredBatt[-1]['volts'] <= 15.2):
+                print("Telemetry: battery too low, proceeds to shut down motors..")
+                stop.put(1)
             #removing the locking
             stop1.get(1)    
         time.sleep(0.5)
