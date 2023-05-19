@@ -111,7 +111,7 @@ if __name__ == '__main__':
         print("Main: vehicle connected and ready...")
         threads = []
         workers = [controlMotorMax,NI.acquisizioneNI,Telemetry.getDrone]
-        workers = [controlMotorMax,NiSim.acquisizioneNI,Telemetry.getDrone]
+        #workers = [controlMotorMax,NiSim.acquisizioneNI,Telemetry.getDrone]
         
         #0 thread motor control
         #1 thread of National Instrument
