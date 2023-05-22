@@ -30,7 +30,6 @@ def controlMotor(master,stop,max=20,step=5,pauses=3):
         0
         )
         
-
         rows.append({"time":round(time.time_ns()/1000),"pwm_percent":i})
         time.sleep(pauses)
     i += step
@@ -53,15 +52,6 @@ def controlMotor(master,stop,max=20,step=5,pauses=3):
         rows.append({"time":round(time.time_ns()/1000),"pwm_percent":max})
         time.sleep(pauses)
 
-    print("motor test complete.. writting to csv.")
-    for row in rows:
-        inputVal = pd.concat([inputVal,pd.DataFrame([row])],ignore_index=True)
-    inputVal.to_csv("./pwminput.csv",'\t',index=False)
-    
-    #Natural stop
-    if stop.empty():
-            stop.put(1)
-    
     print("deccelerazione in corso...")
     for j in range(max-step,0,-5):
         print("deccelerating motor: %s" % j)
@@ -77,7 +67,16 @@ def controlMotor(master,stop,max=20,step=5,pauses=3):
         0, # compass learning
         0
         )
+        rows.append({"time":round(time.time_ns()/1000),"pwm_percent":j})
         time.sleep(2)
     
-    print("deccelerazione completa.")
+    #Natural stop
+    if stop.empty():
+            stop.put(1)
+    
+    print("motor test complete.. writting to csv.")
+    for row in rows:
+        inputVal = pd.concat([inputVal,pd.DataFrame([row])],ignore_index=True)
+    inputVal.to_csv("./pwminput.csv",'\t',index=False)
+    print("motor control completed.")
     

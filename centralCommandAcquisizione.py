@@ -64,5 +64,7 @@ if __name__ == '__main__':
     # wait for the decceleration of the drone 
     print("wait for decceleration..")
     threads[0].join()
+    threads[1].join()
+    threads[2].join()
     # Close vehicle object before exiting script
     print("operation complete.")
