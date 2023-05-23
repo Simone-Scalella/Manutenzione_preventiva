@@ -3,7 +3,7 @@ import time
 # Import mavutil
 from pymavlink import mavutil
 
-def controlMotor(master,stop,max=10,step=5,pauses=3):
+def controlMotor(master,stop,max=20,step=5,pauses=3):
     #dati da registrare:
     #potenza %
     #tempo unix timestamp
