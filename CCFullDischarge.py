@@ -68,7 +68,7 @@ def controlMotorMax(stop,stop1,max=100,step=10):
 
 if __name__ == '__main__':
     #Connect to the Vehicle.
-    connection_string = 'COM3'
+    connection_string = 'COM6'
 
        
     #simulation
