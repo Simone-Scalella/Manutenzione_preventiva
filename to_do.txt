@@ -1,0 +1,8 @@
+- 07-06-2023
+
+Fare il fit oltre forza - pwm, anche forza - rpm.
+Il fit forza - pwm, da tirare fuori la formula del pwm in valore assoluto e in percentuale. Replicare questo per tutte le pale.
+
+Per la scarica della batteria, per ogni ciclo andare a fare un fit, sia in pwm - forza che forza - rpm, per valutare come cambia il fit, ci aspettiamo una traslazione verso il basso del curva. 
+
+Per adesso va bene così.
