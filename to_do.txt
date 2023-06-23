@@ -6,3 +6,8 @@ Il fit forza - pwm, da tirare fuori la formula del pwm in valore assoluto e in p
 Per la scarica della batteria, per ogni ciclo andare a fare un fit, sia in pwm - forza che forza - rpm, per valutare come cambia il fit, ci aspettiamo una traslazione verso il basso del curva. 
 
 Per adesso va bene così.
+
+- 23_06_2023
+
+- Calcolare le metriche per gli altri grafici. Prima nel range normale e poi in quello da 37 a 77, che è quello in cui lavora solitamente il drone.
+Non arriva mai al 100% della potenza, e si alza in volo dal 37% in poi.
