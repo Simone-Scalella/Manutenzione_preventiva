@@ -11,3 +11,9 @@ Per adesso va bene così.
 
 - Calcolare le metriche per gli altri grafici. Prima nel range normale e poi in quello da 37 a 77, che è quello in cui lavora solitamente il drone.
 Non arriva mai al 100% della potenza, e si alza in volo dal 37% in poi.
+
+
+06_07_2023
+
+Definire quattro quartili sulla base della carica della batteria, dopo per ogni quartile fare il (pwm - national instrument) per le curve presenti in quel quartile.
+Stesso grafico con quattro curve.
